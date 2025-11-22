@@ -30,8 +30,15 @@ app.get('/', (req, res) => {
   res.json({ message: 'BuzzinUAE API Server is running' });
 });
 
+// Debug: Test route
+app.get('/api/test', (req, res) => {
+  res.json({ message: 'Test route works!' });
+});
+
 // Routes
+console.log('Registering routes at /api');
 app.use('/api', linksRouter);
+console.log('Routes registered');
 
 // Health check
 app.get('/api/health', (req, res) => {
