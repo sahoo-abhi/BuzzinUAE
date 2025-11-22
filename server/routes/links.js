@@ -4,18 +4,19 @@ import { Link } from '../models/Link.js';
 const router = express.Router();
 
 // Get all links for a user
-router.get('/links/:userId', async (req, res) => {
+router.get('/:userId', async (req, res) => {
   try {
     const { userId } = req.params;
     const links = await Link.find({ userId }).sort({ createdAt: -1 });
     res.json(links);
   } catch (error) {
+    console.error('Error fetching links:', error);
     res.status(500).json({ error: error.message });
   }
 });
 
 // Add a new link
-router.post('/links', async (req, res) => {
+router.post('/', async (req, res) => {
   try {
     const { url, platform, userId } = req.body;
     
@@ -24,20 +25,22 @@ router.post('/links', async (req, res) => {
     }
 
     const link = new Link({ url, platform, userId });
-    await link.save();
-    res.status(201).json(link);
+    const savedLink = await link.save();
+    res.status(201).json(savedLink);
   } catch (error) {
+    console.error('Error saving link:', error);
     res.status(500).json({ error: error.message });
   }
 });
 
 // Delete a link
-router.delete('/links/:id', async (req, res) => {
+router.delete('/:id', async (req, res) => {
   try {
     const { id } = req.params;
-    await Link.findByIdAndDelete(id);
-    res.json({ message: 'Link deleted' });
+    const deletedLink = await Link.findByIdAndDelete(id);
+    res.json({ message: 'Link deleted', deletedLink });
   } catch (error) {
+    console.error('Error deleting link:', error);
     res.status(500).json({ error: error.message });
   }
 });
