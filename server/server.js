@@ -18,6 +18,11 @@ mongoose
   .then(() => console.log('MongoDB connected'))
   .catch((err) => console.log('MongoDB connection error:', err));
 
+// Root route
+app.get('/', (req, res) => {
+  res.json({ message: 'BuzzinUAE API Server is running' });
+});
+
 // Routes
 app.use('/api', linksRouter);
 
